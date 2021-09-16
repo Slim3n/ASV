@@ -1,0 +1,33 @@
+Which programming language and which framework ?
+the app utilizes python and django
+
+
+Which DB uses the app ?
+Postgres
+all the properties about the db are contained in the settings.py file
+
+
+How is the application structured ?
+    the application is divided in 2 big parts:
+        - users related the user management (log in, log out, registration)
+        - scans_logs related to the scans/customers management
+
+
+How is structured each single part ?
+
+Each part has the following structure
+- models.py contains the class that reflects the database structure
+- urls.py is the file where you specify the path of the page you are going to create
+- view.py contains the functions that are executed when a certain request on a certain url is done
+        for example the index function is the function which is executed when you are on the home page of the app,
+        it executes all the queries necessary to display the data in the dashboard.
+- templates folder contains the html pages for each url(page) created
+
+
+Which is the typical workflow to follow when creating a new web page ?
+first of all you need to define the new url path in the urls.py and you have to also specify there the name of the function you're going
+to create in the view.py that will be executed when you navigate to that page
+
+Then, define and implement the function in the view.py file
+
+Finally, create the html page which will be displayed when the url is followed

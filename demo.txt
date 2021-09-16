@@ -1,0 +1,26 @@
+create a new pycharm project
+
+    TESTING ENVIRONMENT
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'asv_db',
+        'USER': 'felice',
+        'PASSWORD': 'felice',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+    SUPERUSER
+    python manage.py createsuperuser
+    admin: asv_admin password: asv_admin
+    configure admin.py
+
+    
+     pip install django-bootstrap4
+
+
+
+

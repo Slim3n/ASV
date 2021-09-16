@@ -1,0 +1,60 @@
+Deployment documentation
+
+Full deployment guide at:
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+
+
+    PRODUCTION ENVIRONMENT
+sudo apt update
+sudo apt install -y python3-pip python3-dev libpq-dev
+sudo apt install -y nginx curl
+sudo apt install -y postgresql postgresql-contrib
+
+sudo -u postgres psql
+create database asv_db;
+create user asv_user with password 'asv_password';
+alter role asv_user set client_encoding to 'utf8';
+alter role asv_user SET default_transaction_isolation to 'read committed';
+alter role asv_user set timezone to 'UTC';
+grant all privileges on database asv_db to asv_user;
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv
+mkdir asv_project
+cd asv_project/
+virtualenv asv_venv
+source asv_venv/bin/activate
+pip install django gunicorn psycopg2
+django-admin startproject asv_project .
+cd asv_project
+vim settings.py
+
+	ALLOWED_HOSTS = ['10.42.0.4', '192.168.1.172', '127.0.0.1', '172.16.100.121']
+
+	DATABASES = {
+	    'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'asv_db',
+		'USER': 'asv_user',
+		'PASSWORD': 'asv_password',
+		'HOST': '127.0.0.1',
+		'PORT': '5432',
+	    }
+	}
+
+	STATIC_URL = '/static/'
+	STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+python manage.py migrate
+
+python manage.py createsuperuser
+	user: asv_superuser
+	pasw: asv_superuser
+	
+python manage.py runserver
+
+cd ~/asv_project_dir
+gunicorn --bind 0.0.0.0:8000 asv_project.wsgi
+
+CONTINUE ON THE GUIDE AT
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
